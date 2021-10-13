@@ -1,5 +1,8 @@
 class Movie < ActiveRecord::Base
-  
+
+  def self.all_ratings
+    @all_ratings = Movie.distinct.pluck(:rating)
+  end
   
   def self.with_ratings(ratings_list)
   # if ratings_list is an array such as ['G', 'PG', 'R'], retrieve all
@@ -11,17 +14,5 @@ class Movie < ActiveRecord::Base
       @movies = Movie.where(rating: ratings_list)
     end
   end
-
-  def self.all_ratings
-    @all_ratings = Movie.all.map{ |m| m[:rating] }.uniq
-  end
   
-  def self.ratings_to_show(checked_ratings)
-    if checked_ratings.nil?
-      @ratings_to_show = nil
-    else
-      @ratings_to_show = checked_ratings
-    end
-  end
-
 end
