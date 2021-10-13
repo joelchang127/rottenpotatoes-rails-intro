@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -7,7 +7,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @ratings_to_show = Movie.ratings_to_show(params[:ratings].eql?("1"))
+    @movies = Movie.with_ratings(params[:ratings])
+    @all_ratings = @movies.all_ratings
   end
 
   def new
@@ -37,6 +39,7 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
 
   private
   # Making "internal" methods private is not required, but is a common practice.
