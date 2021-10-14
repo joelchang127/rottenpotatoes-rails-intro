@@ -16,11 +16,14 @@ class MoviesController < ApplicationController
     @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort_by])
     
     if params[:sort_by] == 'title'
-      @title_header = 'hilite'
+      @title_header = 'hilite mb-2 bg-warning'
+      @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort_by])
     elsif params[:sort_by] == 'release_date'
-      @release_header ='hilite'
-    end 
+      @release_header ='hilite mb-2 bg-warning'
+      @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort_by])
+    end
     
+    @ratings_to_show_sort = @ratings_to_show.map{|rating|[rating,1]}.to_h
   end
 
   def new
