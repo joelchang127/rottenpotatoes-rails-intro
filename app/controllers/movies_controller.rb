@@ -8,44 +8,23 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
-  def index
-    puts "HIIII"
+ def index
+    
     # when to use session:
     # - no :sort_by + no :rating + params is not empty <-- meaning not base index
     if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit))
-      puts "ratings_to_show below"
-      puts session[:ratings_to_show]
+      puts "coming from other page"
       @ratings_to_show = session[:ratings_to_show]
       @title_header = session[:title_header]
       @release_header = session[:release_header]
-      puts "first if statement"
-      puts @ratings_to_show
+      puts @release_header
     elsif (params.has_key?(:ratings))
+      puts "some boxes are checked"
       @ratings_to_show = params[:ratings].keys
-      puts "elsif statement"
     else
+      puts "no boxes checked"
       @ratings_to_show = Movie.all_ratings
-      puts "else statement"
-      puts @ratings_to_show.class
     end
-    
-    if !@ratings_to_show.nil?
-      if (params.has_key?(:ratings))
-        @ratings_to_show = params[:ratings].keys
-        puts "1st ratings_to_show below"
-        puts @ratings_to_show
-      else
-        @ratings_to_show = Movie.all_ratings
-        puts "2nd ratings_to_show below"
-        puts @ratings_to_show
-      end
-      @ratings_to_show_sort = @ratings_to_show.map{|rating|[rating,1]}.to_h
-    else
-      @ratings_to_show_sort = Movie.all_ratings.map{|rating|[rating,1]}.to_h
-    end
-    
-    puts @ratings_to_show_sort.class
-    puts @ratings_to_show_sort
     
     @all_ratings = Movie.all_ratings
     @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort_by])
@@ -57,11 +36,14 @@ class MoviesController < ApplicationController
     end
     
     if (@title_header == 'hilite mb-2 bg-warning')
+      puts "we should order by title"
       @movies = Movie.with_ratings(@ratings_to_show).order("title")
     elsif (@release_header == 'hilite mb-2 bg-warning')
+      puts "we should order by release_date"
       @movies = Movie.with_ratings(@ratings_to_show).order("release_date")
     end
     
+    @ratings_to_show_sort = @ratings_to_show.map{|rating|[rating,1]}.to_h
     
     session[:ratings_to_show] = @ratings_to_show
     session[:title_header] = @title_header
