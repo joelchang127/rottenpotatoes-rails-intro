@@ -13,16 +13,12 @@ class MoviesController < ApplicationController
     # when to use session:
     # - no :sort_by + no :rating + params is not empty <-- meaning not base index
     if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit))
-      puts "coming from other page"
       @ratings_to_show = session[:ratings_to_show]
       @title_header = session[:title_header]
       @release_header = session[:release_header]
-      puts @release_header
     elsif (params.has_key?(:ratings))
-      puts "some boxes are checked"
       @ratings_to_show = params[:ratings].keys
     else
-      puts "no boxes checked"
       @ratings_to_show = Movie.all_ratings
     end
     
@@ -36,10 +32,8 @@ class MoviesController < ApplicationController
     end
     
     if (@title_header == 'hilite mb-2 bg-warning')
-      puts "we should order by title"
       @movies = Movie.with_ratings(@ratings_to_show).order("title")
     elsif (@release_header == 'hilite mb-2 bg-warning')
-      puts "we should order by release_date"
       @movies = Movie.with_ratings(@ratings_to_show).order("release_date")
     end
     
