@@ -12,7 +12,7 @@ class MoviesController < ApplicationController
     
     # when to use session:
     # - no :sort_by + no :rating + params is not empty <-- meaning not base index
-    if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit))
+    if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit) && params.has_key?(:ratings_to_show) && params.has_key?(:title_header) && params.has_key?(:release_header))
       puts "coming from other page"
       @title_header = session[:title_header]
       puts "title_header worked fine from session"
