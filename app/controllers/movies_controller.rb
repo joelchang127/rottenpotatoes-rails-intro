@@ -14,9 +14,11 @@ class MoviesController < ApplicationController
     # - no :sort_by + no :rating + params is not empty <-- meaning not base index
     if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit))
       puts "coming from other page"
-      @ratings_to_show = session[:ratings_to_show]
       @title_header = session[:title_header]
+      puts "title_header worked fine from session"
       @release_header = session[:release_header]
+      puts "release_header worked fine from session"
+      @ratings_to_show = session[:ratings_to_show]
       puts @release_header
     elsif (params.has_key?(:ratings))
       puts "some boxes are checked"
