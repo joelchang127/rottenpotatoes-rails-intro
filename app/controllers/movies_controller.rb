@@ -38,6 +38,11 @@ class MoviesController < ApplicationController
       @title_header = session[:title_header]
       @release_header = session[:release_header]
       @ratings_to_show = session[:ratings_to_show]
+      if @ratings_to_show.nil?
+        @ratings_to_show = Movie.all_ratings
+      end
+      puts "ratings_to_show below pls"
+      puts @ratings_to_show
     elsif (params.has_key?(:ratings))
       puts "param has ratings!!"
       @ratings_to_show = params[:ratings].keys
