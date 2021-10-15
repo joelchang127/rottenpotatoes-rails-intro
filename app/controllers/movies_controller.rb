@@ -30,6 +30,11 @@ class MoviesController < ApplicationController
     end
     
     if !@ratings_to_show.nil?
+      if (params.has_key?(:ratings))
+        @ratings_to_show = params[:ratings].keys
+      else
+        @ratings_to_show = Movie.all_ratings
+      end
       @ratings_to_show_sort = @ratings_to_show.map{|rating|[rating,1]}.to_h
     else
       @ratings_to_show_sort = Movie.all_ratings.map{|rating|[rating,1]}.to_h
