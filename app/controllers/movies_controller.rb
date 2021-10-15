@@ -12,29 +12,42 @@ class MoviesController < ApplicationController
     
     # when to use session:
     # - no :sort_by + no :rating + params is not empty <-- meaning not base index
-    if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit) && params.has_key?(:ratings_to_show) && params.has_key?(:title_header) && params.has_key?(:release_header))
-      puts "coming from other page"
-      @title_header = session[:title_header]
-      puts "title_header worked fine from session"
+#     if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit) && params.has_key?(:ratings_to_show) && params.has_key?(:title_header) && params.has_key?(:release_header))
+#       @title_header = session[:title_header]
+#       @release_header = session[:release_header]
+#       @ratings_to_show = session[:ratings_to_show]
+#     elsif (params.has_key?(:ratings))
+#       @ratings_to_show = params[:ratings].keys
+#     else
+#       @ratings_to_show = Movie.all_ratings
+#     end
+   
+    # need session if coming from other page
+    # 
+    
+   puts params.inspect
+   
+    if (!params.has_key?(:ratings) && !params.has_key?(:sort_by) && !params.has_key?(:commit))
+      puts "coming from non sort/filter"
       puts "title_header below"
-      puts @title_header
-      @release_header = session[:release_header]
-      puts "release_header worked fine from session"
+      puts session[:title_header]
       puts "release_header below"
-      puts @release_header
+      puts session[:release_header]
+      puts "ratings_to_show below"
+      puts session[:ratings_to_show]
+      @title_header = session[:title_header]
+      @release_header = session[:release_header]
       @ratings_to_show = session[:ratings_to_show]
-      puts "ratings to show was set"
-      puts "ratings to show was set to below"
-      puts @ratings_to_show
     elsif (params.has_key?(:ratings))
-      puts "some boxes are checked"
+      puts "param has ratings!!"
       @ratings_to_show = params[:ratings].keys
-    else
-      puts "no boxes checked"
+    elsif (!params.has_key?(:ratings))
+      puts "no checked boxes!"
       @ratings_to_show = Movie.all_ratings
     end
     
     @all_ratings = Movie.all_ratings
+    
     @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort_by])
     
     if params[:sort_by] == 'title'
