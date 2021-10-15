@@ -16,10 +16,16 @@ class MoviesController < ApplicationController
       puts "coming from other page"
       @title_header = session[:title_header]
       puts "title_header worked fine from session"
+      puts "title_header below"
+      puts @title_header
       @release_header = session[:release_header]
       puts "release_header worked fine from session"
-      @ratings_to_show = session[:ratings_to_show]
+      puts "release_header below"
       puts @release_header
+      @ratings_to_show = session[:ratings_to_show]
+      puts "ratings to show was set"
+      puts "ratings to show was set to below"
+      puts @ratings_to_show
     elsif (params.has_key?(:ratings))
       puts "some boxes are checked"
       @ratings_to_show = params[:ratings].keys
