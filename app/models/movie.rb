@@ -1,7 +1,7 @@
 class Movie < ActiveRecord::Base
 
   def self.all_ratings
-    @all_ratings = Movie.distinct.pluck(:rating)
+    @all_ratings = Movie.uniq.pluck(:rating)
   end
   
   def self.with_ratings(ratings_list)
