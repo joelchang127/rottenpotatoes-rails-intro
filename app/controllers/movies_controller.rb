@@ -13,10 +13,13 @@ class MoviesController < ApplicationController
     # when to use session:
     # - no :sort_by + no :rating + params is not empty <-- meaning not base index
     if (!params.has_key?(:rating) && !params.has_key?(:sort_by) && !params.has_key?(:commit))
+      puts "ratings_to_show below"
+      puts session[:ratings_to_show]
       @ratings_to_show = session[:ratings_to_show]
       @title_header = session[:title_header]
       @release_header = session[:release_header]
       puts "first if statement"
+      puts @ratings_to_show
     elsif (params.has_key?(:ratings))
       @ratings_to_show = params[:ratings].keys
       puts "elsif statement"
@@ -26,7 +29,12 @@ class MoviesController < ApplicationController
       puts @ratings_to_show.class
     end
     
-    @ratings_to_show_sort = @ratings_to_show.map{|rating|[rating,1]}.to_h
+    if !@ratings_to_show.nil?
+      @ratings_to_show_sort = @ratings_to_show.map{|rating|[rating,1]}.to_h
+    else
+      @ratings_to_show_sort = Movie.all_ratings.map{|rating|[rating,1]}.to_h
+    end
+    
     puts @ratings_to_show_sort.class
     puts @ratings_to_show_sort
     
